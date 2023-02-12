@@ -1,0 +1,3 @@
+[submodule "Plugins/PredictedMovement"]
+	path = Plugins/PredictedMovement
+	url = https://github.com/Vaei/PredictedMovement.git
