@@ -1,7 +1,7 @@
 # PredictedMovementExample
 This is the third person template example project for the [PredictedMovement Plugin](https://github.com/Vaei/PredictedMovement).
 
-It uses the `link` branch which links all the classes together via inheritance.
+We use the `link` branch which links all the classes together via inheritance.
 
 ## Cloning Repo
 When cloning you should use: `git clone https://github.com/Vaei/PredictedMovementExample.git --recurse-submodules`
