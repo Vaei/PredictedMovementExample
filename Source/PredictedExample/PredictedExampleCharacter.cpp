@@ -9,13 +9,21 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "PredictedExampleCharacterMovement.h"
 
 
 //////////////////////////////////////////////////////////////////////////
 // APredictedExampleCharacter
 
-APredictedExampleCharacter::APredictedExampleCharacter()
+APredictedExampleCharacter::APredictedExampleCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UPredictedExampleCharacterMovement>(CharacterMovementComponentName))  // EXAMPLE_CHANGE - Use our CMC
 {
+	// EXAMPLE_CHANGE cache a reference to our own movement component
+	PredictedMovement = Cast<UPredictedExampleCharacterMovement>(GetCharacterMovement());
+	
+	// EXAMPLE_CHANGE Let us see the capsule, because otherwise we can't tell if crouch or prone!
+	GetCapsuleComponent()->SetHiddenInGame(false);
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 		
@@ -49,6 +57,26 @@ APredictedExampleCharacter::APredictedExampleCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+}
+
+float APredictedExampleCharacter::GetStamina() const
+{
+	return PredictedMovement ? PredictedMovement->GetStamina() : 0.f;
+}
+
+float APredictedExampleCharacter::GetMaxStamina() const
+{
+	return PredictedMovement ? PredictedMovement->GetMaxStamina() : 0.f;
+}
+
+float APredictedExampleCharacter::GetStaminaNormalized() const
+{
+	return (GetMaxStamina() > 0.f) ? (GetStamina() / GetMaxStamina()) : 0.f;
+}
+
+void APredictedExampleCharacter::Prone(bool bClientSimulation)
+{
+	Super::Prone(bClientSimulation);
 }
 
 void APredictedExampleCharacter::BeginPlay()

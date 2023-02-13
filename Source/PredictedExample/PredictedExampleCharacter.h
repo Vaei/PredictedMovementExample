@@ -3,16 +3,29 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
 #include "InputActionValue.h"
+#include "Sprint/SprintCharacter.h"
 #include "PredictedExampleCharacter.generated.h"
 
+// EXAMPLE_CHANGE - UI Events
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStaminaChanged, float, Stamina);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMaxStaminaChanged, float, MaxStamina);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStaminaDrained);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FStaminaRecovered);
+
+class UPredictedExampleCharacterMovement;
 
 UCLASS(config=Game)
-class APredictedExampleCharacter : public ACharacter
+class APredictedExampleCharacter : public ASprintCharacter  // EXAMPLE_CHANGE - Inherit ASprintCharacter (Stamina does not have a character)
 {
 	GENERATED_BODY()
 
+	// EXAMPLE_CHANGE - Add our character movement component here
+	
+	/** Movement component used for movement logic in various movement modes (walking, falling, etc), containing relevant settings and functions to control movement. */
+	UPROPERTY(Category=Character, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess = "true"))
+	TObjectPtr<UPredictedExampleCharacterMovement> PredictedMovement;
+	
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
@@ -38,11 +51,39 @@ class APredictedExampleCharacter : public ACharacter
 	class UInputAction* LookAction;
 
 public:
-	APredictedExampleCharacter();
+	// EXAMPLE_CHANGE - UI Events
 	
+	UPROPERTY(BlueprintAssignable)
+	FStaminaChanged OnStaminaChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FMaxStaminaChanged OnMaxStaminaChanged;
+
+	UPROPERTY(BlueprintAssignable)
+	FStaminaDrained OnStaminaDrained;
+
+	UPROPERTY(BlueprintAssignable)
+	FStaminaRecovered OnStaminaRecovered;
+
+	// EXAMPLE_CHANGE - Stamina getters, the UI needs these
+	
+	UFUNCTION(BlueprintPure, Category="PredictedExample")
+	float GetStamina() const;
+
+	UFUNCTION(BlueprintPure, Category="PredictedExample")
+	float GetMaxStamina() const;
+
+	UFUNCTION(BlueprintPure, Category="PredictedExample")
+	float GetStaminaNormalized() const;
+	
+public:
+	/* EXAMPLE_CHANGE #2 - Add an object initializer */
+	APredictedExampleCharacter(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 protected:
 
+	virtual void Prone(bool bClientSimulation = false) override;
+	
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
