@@ -11,4 +11,7 @@ If you don't, you can use this after the fact:  `git submodule update --init --r
 ## Updating Repo
 `git pull` will update your repo for changes to this project BUT it will not retrieve changes to the plugin itself.
 
-For that you must run the command `git submodule update --init --recursive`
+For that you must run the command `git submodule update --recursive --remote`
+
+## Example Changes
+You can find a note for all changes made to the ThirdPersonTemplate by doing a project-wide search in the source code for `EXAMPLE_CHANGE`
