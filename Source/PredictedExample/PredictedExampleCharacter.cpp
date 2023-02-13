@@ -74,11 +74,6 @@ float APredictedExampleCharacter::GetStaminaNormalized() const
 	return (GetMaxStamina() > 0.f) ? (GetStamina() / GetMaxStamina()) : 0.f;
 }
 
-void APredictedExampleCharacter::Prone(bool bClientSimulation)
-{
-	Super::Prone(bClientSimulation);
-}
-
 void APredictedExampleCharacter::BeginPlay()
 {
 	// Call the base class  

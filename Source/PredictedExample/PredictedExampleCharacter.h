@@ -82,8 +82,6 @@ public:
 
 protected:
 
-	virtual void Prone(bool bClientSimulation = false) override;
-	
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
 
