@@ -3,6 +3,8 @@ This is the third person template example project for the [PredictedMovement Plu
 
 We use the `link` branch which links all the classes together via inheritance.
 
+This is for UE5.1.
+
 ## Cloning Repo
 When cloning you should use: `git clone https://github.com/Vaei/PredictedMovementExample.git --recurse-submodules`
 
